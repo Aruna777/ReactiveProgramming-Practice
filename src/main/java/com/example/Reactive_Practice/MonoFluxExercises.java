@@ -7,79 +7,95 @@ import reactor.core.publisher.Mono;
 import java.time.Duration;
 
 public class MonoFluxExercises {
-    public static void main(String[]args) throws InterruptedException {
 
-//        Mono Practice
-        Mono<String> mono = Mono.just("Hello World");
-        mono.subscribe(System.out::println);
+//    Mono Practice
+    public Mono<String> getHelloWorldMono() {
+        return Mono.just("Hello World");
+    }
 
-        Mono<String> mono2 = Mono.empty();
-        mono2.subscribe(System.out::println);
+    public  Mono<String> getEmptyMono(){
+        return Mono.empty();
+    }
 
-        Mono<Integer> mono3 = Mono.error(new RuntimeException(" error occurred"));
-        mono3.onErrorResume(e-> Mono.just(3)).subscribe(System.out::println);
+    public Mono<Object> getErrorMono() {
+        return Mono.error(new RuntimeException("error occurred"))
+                .onErrorResume(e -> Mono.just(3));
+    }
 
-        Mono<Integer> mono4 = Mono.just(10).map(n-> n*2);
-        mono4.subscribe(System.out::println);
+    public Mono<Integer> getMappedMono() {
+        return Mono.just(10).map(n -> n * 2);
+    }
 
-        Mono<String> mono5 = Mono.just("Hello and Welcome ").delayElement(Duration.ofSeconds(1));
-        mono5.subscribe(System.out::println);
-        Thread.sleep(3000);
+    public Mono<String> getDelayedMono(){
+        return Mono.just("Hello and Welcome ").delayElement(Duration.ofSeconds(1));
+    }
 
-        Mono<String> mono6 = Mono.just("User123")
+    public Mono<String> getFlatMappedMono(){
+        return Mono.just("User123")
                 .flatMap(user-> Mono.just("user for " +user));
-        mono6.subscribe(System.out::println);
+    }
 
-//        Flux Practice
-        Flux<Integer> flux1 = Flux.range(1, 10);
-        flux1.subscribe(System.out::println);
+//    Flux Practice
+    public Flux<Integer> getRangeFlux(){
+        return  Flux.range(1, 10);
+    }
 
-        Flux<Object> flux2 = Flux.just("String", 123, true);
-        flux2.subscribe(System.out::println);
+    public Flux<Object> getMixedFlux(){
+        return Flux.just("String", 123, true);
+    }
 
-        Flux<Integer> flux3 = Flux.range(1, 20);
-        flux3.filter(n-> n%2 ==0).subscribe(System.out::println);
+    public Flux<Integer> getFilteredFlux(){
+        return Flux.range(1, 20)
+                .filter(n-> n%2 ==0);
+    }
 
-        Flux<String> flux4 = Flux.just("John", "Jane", "Tom");
-        flux4.map(String::toUpperCase).subscribe(System.out::println);
+    public Flux<String> getMappedFlux(){
+        return Flux.just("John", "Jane", "Tom")
+                .map(String::toUpperCase);
+    }
 
-        Flux<Integer> flux5 = Flux.just(1,2,3).concatWith(Flux.error(new RuntimeException("Oops!")));
-        flux5.onErrorReturn(99).subscribe(System.out::println);
+    public Flux<Integer> getErrorHandledFlux(){
+        return Flux.just(1,2,3)
+                .concatWith(Flux.error(new RuntimeException("Oops!")))
+                .onErrorReturn(99);
+    }
 
-        Flux<Integer> fluxMerge1 =  Flux.range(1, 5);
-        Flux<Integer> fluxMerge2 = Flux.range(6, 5);
-        fluxMerge1.mergeWith(fluxMerge2).subscribe(System.out::println);
+    public Flux<Integer> getMergedFlux(){
+        Flux<Integer> flux1 =  Flux.range(1, 5);
+        Flux<Integer> flux2 = Flux.range(6, 5);
+        return  flux1.mergeWith(flux2);
+    }
 
+    public Flux<String> getCombinedNamesAndHobbies() {
         Mono<String> names = Mono.just("Practice");
-        Flux<String> hobbies = Flux.just("art" ,"dance", "sing", "play");
-        Flux<String> combined = names.flatMapMany(n -> hobbies.map(hobby -> n + " " + hobby));
-        combined.subscribe(System.out::println);
+        Flux<String> hobbies = Flux.just("art", "dance", "sing", "play");
+        return names.flatMapMany(n -> hobbies.map(hobby -> n + " " + hobby));
+    }
 
-        Flux<Long> infiniteFlux = Flux.interval(Duration.ofMillis(500));
-        infiniteFlux.limitRate(2).subscribe(System.out::println);
-        Thread.sleep(5000);
+    public static Flux<Long> getLimitedRateInfiniteFlux() {
+        return Flux.interval(Duration.ofMillis(500)).limitRate(2);
+    }
 
-        Flux<Integer> sub1 = Flux.range(1, 5);
-        sub1.subscribe(System.out::println);
-        sub1.map(n-> n*n).subscribe(System.out::println);
+    public static Flux<Integer> getSquaredFlux() {
+        return Flux.range(1, 5).map(n -> n * n);
+    }
 
-        Flux<String> fluxZip1 = Flux.just("alice", "bob", "kate");
-        Flux<String> fluxZip2 = Flux.just("lily", "kristy", "Miha");
-        Flux.zip(fluxZip1, fluxZip2).subscribe(System.out::println);
+    public Flux<String> getZippedNamesFlux() {
+        Flux<String> flux1 = Flux.just("alice", "bob", "kate");
+        Flux<String> flux2 = Flux.just("lily", "kristy", "Miha");
+        return Flux.zip(flux1, flux2, (name1, name2) -> name1 + " & " + name2);
+    }
 
-        Flux<String> log = Flux.just("apple", "banana", "mango", "berry");
-        log.doOnNext(n -> System.out.println("logging: " + n)).subscribe(System.out::println);
+    public Flux<String> getLoggedFlux() {
+        return Flux.just("apple", "banana", "mango", "berry")
+                .doOnNext(n -> System.out.println("logging: " + n));
+    }
 
-        Flux<Integer> retryFlux = Flux.just(1, 2, 3)
+    public Flux<Integer> getRetryFlux() {
+        return Flux.just(1, 2, 3)
                 .concatWith(Flux.error(new RuntimeException("Error on 3")))
                 .retry(2)
-                .onErrorResume(e -> {
-                    System.out.println("Retries exhausted, returning fallback value.");
-                    return Flux.just(99);
-                                });
-        retryFlux.subscribe(System.out::println, error -> System.err.println("Final Error: " + error.getMessage()));
-
-
-     }
+                .onErrorResume(e -> Flux.just(99));
+    }
 
 }
