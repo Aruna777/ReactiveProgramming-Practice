@@ -76,7 +76,7 @@ control over when and how elements are emitted. Emits multiple items.
 • takeUntil(Predicate<T>): Emits items until the condition becomes true.
 
 13. Flux Generate
-• generate(Supplier<S>, BiFunction<S, FluxSink<T>, S>):
+• generate(Supplier< S >, BiFunction< S, FluxSink<T>, S>):
 Allows generating values in a synchronous manner, maintaining internal state across emissions. Emits one value at a time.
 
 15. Flux Generate with State
