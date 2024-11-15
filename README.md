@@ -79,10 +79,6 @@ control over when and how elements are emitted. Emits multiple items.
 • generate(Supplier< S >, BiFunction< S, FluxSink<T>, S>):
 Allows generating values in a synchronous manner, maintaining internal state across emissions. Emits one value at a time.
 
-15. Flux Generate with State
-• generate(Supplier<S>, BiFunction<S, FluxSink<T>, S>): The state S is provided and used to generate a
-series of elements. It’s useful for cases like iterating over stateful data.
-
 16. Flux Handle
 •Combines the logic of filter and map, allowing both synchronous emissions and conditional logic for each value.
 
