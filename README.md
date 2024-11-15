@@ -1,6 +1,6 @@
 <h1>JAVA REACTIVE PROGRAMMING</h1>
 
-<h2>1. Mono</h2>
+<h3>1. Mono</h3>
 Mono is a publisher that emits at most one value (or no value) and then completes. It is used when you expect only a single item (or none) from the source.
 Factory Methods:
 • just(T data): Creates a Mono that emits a single item data and then completes.
