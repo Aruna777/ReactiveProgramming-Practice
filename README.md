@@ -79,10 +79,10 @@ control over when and how elements are emitted. Emits multiple items.
 • generate(Supplier< S >, BiFunction< S, FluxSink<T>, S>):
 Allows generating values in a synchronous manner, maintaining internal state across emissions. Emits one value at a time.
 
-16. Flux Handle
+14. Flux Handle
 •Combines the logic of filter and map, allowing both synchronous emissions and conditional logic for each value.
 
-17. Do Hooks / Callbacks
+15. Do Hooks / Callbacks
 doOnComplete(): Callback when the sequence completes.
 doOnRequest(): Callback when a request for n elements is made.
 doOnNext(): Callback when an item is emitted.
@@ -90,13 +90,13 @@ doOnError(): Callback when an error occurs.
 doOnTerminate(): Invoked when the sequence terminates, either successfully or with an error. doOnCancel(): Called when a subscription is canceled.
 doOnFinally(): Executes after the sequence is completed, canceled, or errored.
 
-18. Delay Operator
+16. Delay Operator
 • delayElements(Duration): Delays each item emitted by the Flux by the specified duration.
 
-19. Subscribe()
+17. Subscribe()
 • The subscribe method triggers data flow. It has several overloaded versions allowing you to define custom behavior for onNext, onError, onComplete signals.
 
-20. Error Handling
+18. Error Handling
 • onErrorReturn(T fallback): If an error occurs, returns a fallback value.
 • onErrorResume(Function<Throwable, ? extends Publisher<? extends T>>): Fallback to another
 Publisher when an error occurs.
@@ -105,70 +105,70 @@ values.
 • defaultIfEmpty(T defaultValue): Emits a default value if the sequence is empty.
 • switchIfEmpty(Publisher<T>): Switches to another Publisher if the original sequence is empty.
 
-21. Timeout
+19. Timeout
 • timeout(Duration): Throws an error if the sequence doesn’t emit a value within the given duration.
 
-22. Transform Operator
+20. Transform Operator
 • transform(Function<Flux<T>, Publisher<R>> transformer): Transforms the current stream into another
 reactive stream with a different type.
 
-23. Cold Publisher
+21. Cold Publisher
 • A Cold Publisher starts emitting values only when a subscriber subscribes, and each subscriber receives its
 own copy of the data stream.
 • Independent streams. Different producer- Different subscriber
 • Example: Netflix- multiple people watching the same show.
 
-24. Hot Publisher
+22. Hot Publisher
 • A Hot Publisher starts emitting values immediately, regardless of whether there are subscribers. New
 subscribers only receive events emitted after they subscribe.
 • Single Producer- Multiple Subscribers. Can emit even without a subscriber.
 • Example: Movie Theater, Weather App, WhatsApp Channel.
 
-25. Auto Connect
+23. Auto Connect
 • autoConnect(n): Converts a Cold Publisher to Hot Publisher, starting when at least n subscribers are
 connected. Publish.autoconnect()
 
-26. Replay/Cache
+24. Replay/Cache
 • replay(): Replays previous emissions to new subscribers.
 • cache(): Caches and replays emitted values to new subscribers.
 
-27. Schedulers
+25. Schedulers
 • Bounded Elastic: Optimized for blocking I/O tasks, expanding as needed.
 • Parallel: Fixed-size thread pool designed for parallel processing tasks.
 • Single: Executes tasks sequentially on a single thread.
 • Immediate: Runs tasks on the current thread.
 
-28. Operators for Scheduling
+26. Operators for Scheduling
 • subscribeOn(Scheduler): Specifies which thread to run the subscription logic on. For Upstream.
 • publishOn(Scheduler): Specifies which thread to execute the downstream logic on. For Downstream.
 
-29. Parallel Execution
+27. Parallel Execution
 • parallel(): Converts a Flux into a ParallelFlux for parallel processing.
 • Parallel(), runOn(scheduler.parallel;)- number of CPU= number of parallel threads
 • Sequential()- Use this is to bring back to sequential execution.
 
-30. Backpressure Handling
+28. Backpressure Handling
 • If the publisher keeps on publishing but the consumer could not handle it. If the queue is full, the producer stops producing.
 • onBackpressureBuffer(): Buffers all emitted items when the downstream can’t keep up.
 • onBackpressureDrop(): Drops the newest items if the downstream is slow.
 • onBackpressureLatest(): Only the latest item is kept when the downstream is slow.
 • onBackpressureError(): Signals an error when the downstream can’t handle the rate.
 
-31. Limit Rate
+29. Limit Rate
 • limitRate(n): Limits the number of elements requested upstream in batches, controlling backpressure.
 • A way of subscriber saying how much data to produce.
 
-32. Batching - Buffer, Error, Drop, Latest
+30. Batching - Buffer, Error, Drop, Latest
 • Batching is used when we have a flux- never ending data stream of messages. Helpful for kafka and rabbitmq.
 • Similar to the backpressure strategies above, these control how excessive items are handled in different
 scenarios.
 
-33. Batching Operators
+31. Batching Operators
 • buffer(): Collects emitted items into a list and emits that list periodically (e.g., every 5 items).
 • window(): Divides the sequence into smaller Fluxes that emit a certain number of items or time windows.
 • groupBy(): Groups the emitted items into multiple Fluxes based on a specified key.
 
-34. Operators- Microservices
+32. Operators- Microservices
 • startWith(): Starts the sequence with the given items.
 • concatWith(): Opposite of start with, end with. Concatenates another sequence after this one completes.
 • concatDelayError()- Delays the error, by checking other producer.
@@ -179,12 +179,12 @@ merge it exits.
 • ftaMapMany()- Returns many items, not one.
 • concatMap(): Maps each element to another Publisher but concatenates the results sequentially.
 
-35. CollectList, Then Operator
+33. CollectList, Then Operator
 • collectList(): Collects all elements from the sequence into a List when it completes.
 • then(): Executes when the sequence completes, useful for chaining actions. It gives the success or failure
 status. It does not give the OnNext outputs., it directly gives onComplete or OnError.
 
-36. Repeat, RepeatWhen, Retry, RetryWhen
+34. Repeat, RepeatWhen, Retry, RetryWhen
 • repeat(): Repeats the emission of values indefinitely or up to a specified number of times after the Flux
 completes. i.e., resubscribes after a complete signal. If you add repeat to mono, it becomes flux, because it
 continuously repeats and subscribes.
@@ -196,12 +196,12 @@ is mentioned, it retries for infinite times.
 by another Publisher.
 • retryExhaustedThrow(), doBeforeRetry(), retry.max()
 
-37. Sinks (Emit API)
+35. Sinks (Emit API)
 • Sinks are used for manual control over emission in reactive streams. Can act like both subscriber and
 publisher.
 • Just want to emit items without complexity.
 
-38.Sink API Methods:
+36.Sink API Methods:
 o tryEmitValue(T value): Attempts to emit a value to subscribers.
 o tryEmitNext(T value): Attempts to emit the next value.
 o tryEmitEmpty(): Completes the sink without emitting any value.
@@ -209,23 +209,23 @@ o tryEmitError(Throwable t): Completes the sink with an error signal.
 o emitValue(T value): Emits a value and fails if not possible (throws an exception). o emitNext(T value): Emits the next value and fails if not possible.
 o emitError(Throwable t): Emits an error and fails if not possible.
 
-39. Sink Types
+37. Sink Types
 • Sink.One<T>: For emitting a single value or completion.
 • Sink.Many<T>: For emitting multiple values.
 o Unicast: Allows only one subscriber.
 o Multicast: Allows multiple subscribers but only shares values emitted after the subscription. o Replay: Replays values to late subscribers.
 
-40. Multicast (directBestEffort, directAllOrNothing)
+38. Multicast (directBestEffort, directAllOrNothing)
 • directBestEffort: Emits values to subscribers in a best-effort manner, meaning some subscribers may not
 receive all values. Can use if one subscriber is slow and affects the performance of the other subscriber.
 • directAllOrNothing: Ensures all subscribers receive every emitted value or none at all. Can use if one
 subscriber is slow, then no subscribers receives the message.
 
-41. Sink Many Replay
+39. Sink Many Replay
 • Sink.Many.replay(): Allows emitting and replaying the stream to any future subscribers, ensuring they see all
 previously emitted items.
 
-42. Context
+40. Context
 Contexts are immutable key-value maps associated with a reactive sequence, used for passing metadata across the reactive chain. Concerns- rate limiting, authentication, and monitoring.
 Context Methods:
 • deferContextual(): Defer access to the current context, allowing you to retrieve it when needed.
@@ -235,10 +235,10 @@ Context Methods:
 • delete(K key): Removes a key-value pair from the context.
 • Context.of(): Creates a new context with key-value pairs.
 
-43. Propagation
+41. Propagation
 Context information is propagated between reactive components via the subscription chain. This allows the propagation of metadata like authentication tokens or correlation IDs across the system.
 
-44. Rate Limiter with Context
+42. Rate Limiter with Context
 • getOrEmpty(K key): Retrieves an entry from the context if it exists.
 • SynchronizedMap: You can synchronize map operations with a reactive Context, ensuring thread safety in
 rate-limiting scenarios.
