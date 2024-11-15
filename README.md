@@ -1,6 +1,6 @@
 <h1>JAVA REACTIVE PROGRAMMING</h1>
 
-1. Mono
+<b>1. Mono</b>
 Mono is a publisher that emits at most one value (or no value) and then completes. It is used when you expect only a single item (or none) from the source.
 Factory Methods:
 • just(T data): Creates a Mono that emits a single item data and then completes.
@@ -12,7 +12,7 @@ signals an error.
 • fromRunnable(Runnable): Executes the provided Runnable and completes without emitting data.
 • fromFuture(Future<T>): Converts a Future into a Mono, emitting the result when it completes.
 
-2. Flux
+<b>2. Flux</b>
 Flux is a publisher that emits 0 to N elements. It's used when you expect multiple items (or none).
 Factory Methods:
 • just(T... values): Creates a Flux that emits the given values sequentially.
@@ -22,7 +22,7 @@ element.
 • fromStream(Stream<? extends T>): Emits elements from a Java Stream.
 • range(int start, int count): Emits a sequence of integers starting from start and increments up to count.
 
-3. Java Stream vs. Reactive Stream
+<b>3. Java Stream vs. Reactive Stream</b>
 • Java Streams: Operate on a finite set of data (collections) in a synchronous, blocking manner. Used primarily
 with in-memory data. Ex: If one stream is completed and if we try to run another stream, it throws an error.
 • To resolve this, we can have one publisher stream to multiple consumers. Then we can use supplier of stream.
@@ -30,59 +30,59 @@ Ex: fromStream(()-> stream())
 • Reactive Streams (Mono/Flux): Can handle asynchronous, non-blocking streams of data (which may be
 infinite). It can work with backpressure.
 
-4. Log Operator
+<b>4. Log Operator</b>
 • log(): Logs each signal from the stream for debugging purposes (onNext, onError, onComplete, onSubscribe).
 This can help visualize the flow of data and errors in a reactive stream.
 • Acts as a middleman between producer and subscriber.
 
-5. List and Set vs. Mono and Flux
+<b>5. List and Set vs. Mono and Flux</b>
 • List/Set: Traditional in-memory data structures holding a finite number of elements that can be accessed
 eagerly.
 • Mono/Flux: Reactive types that deal with asynchronous data. Mono handles one item or none, whereas Flux
 can handle multiple or none, emitted over time.
 
-6. Flux
+<b>6. Flux</b>
 • interval(Duration duration): Emits an increasing long value at regular intervals (non-blocking).
 • empty(): Creates an empty Flux that completes without emitting any data.
 • defer(Supplier<Publisher<T>>): Defers the creation of the Flux until a subscriber subscribes, which can be
 useful for dynamic data generation.
 
-7. Mono/Flux Conversion
+<b>7. Mono/Flux Conversion</b>
 • Mono to Flux: Mono.toFlux() converts a Mono into a Flux with one item.
 • Flux to Mono: Flux.next() converts a Flux into a Mono that emits only the first element.
 
-8. Flux Sink
+<b>8. Flux Sink</b>
 • Flux.create(Consumer<FluxSink<T>>): Creates a Flux and allows dynamic generation of elements. You
 have control over when and how elements are emitted via the FluxSink API.
 
-9. Thread Safety
+<b>9. Thread Safety</b>
 Reactive types (Mono/Flux) are thread-safe by default, meaning multiple threads can safely subscribe or request data without causing concurrency issues. Operators like subscribeOn() and publishOn() allow controlling threading behavior in a safe manner.
 
-10. Emit On-Demand
+<b>10. Emit On-Demand</b>
 • FluxSink.request(long n): Allows emitting exactly n items to the subscribers on demand. Useful when
 implementing backpressure strategies.
 • FluxSink.OnRequest(request-{}), FluxSink.isCancelled()
 
-11. Flux Create, EmitUntil
+<b>11. Flux Create, EmitUntil</b>
 • Flux.create(Consumer<FluxSink<T>>): A more flexible way to create a Flux programmatically, giving
 control over when and how elements are emitted. Emits multiple items.
 • emitUntil(): Use conditional logic to emit values until a certain condition is met.
 • Designed for single subscriber. Thread safe.
 • It keeps on emitting data to sink. Will deliver everything safely to the subscriber.
 
-12. Take, TakeWhile, TakeUntil Operators
+<b>12. Take, TakeWhile, TakeUntil Operators</b>
 • take(long n): Emits only the first n items and then completes.
 • takeWhile(Predicate<T>): Emits items while the condition in the predicate is true.
 • takeUntil(Predicate<T>): Emits items until the condition becomes true.
 
-13. Flux Generate
+<b>13. Flux Generate</b>
 • generate(Supplier< S >, BiFunction< S, FluxSink<T>, S>):
 Allows generating values in a synchronous manner, maintaining internal state across emissions. Emits one value at a time.
 
-14. Flux Handle
+<b>14. Flux Handle</b>
 •Combines the logic of filter and map, allowing both synchronous emissions and conditional logic for each value.
 
-15. Do Hooks / Callbacks
+<b>15. Do Hooks / Callbacks</b>
 doOnComplete(): Callback when the sequence completes.
 doOnRequest(): Callback when a request for n elements is made.
 doOnNext(): Callback when an item is emitted.
