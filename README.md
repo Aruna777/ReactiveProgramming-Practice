@@ -76,17 +76,17 @@ control over when and how elements are emitted. Emits multiple items.
 • takeUntil(Predicate<T>): Emits items until the condition becomes true.
 
 13. Flux Generate
-• generate(Supplier<S>, BiFunction<S, FluxSink<T>, S>): Allows generating values in a synchronous
-manner, maintaining internal state across emissions. Emits one value at a time.
+• generate(Supplier<S>, BiFunction<S, FluxSink<T>, S>):
+Allows generating values in a synchronous manner, maintaining internal state across emissions. Emits one value at a time.
 
-14. Flux Generate with State
+15. Flux Generate with State
 • generate(Supplier<S>, BiFunction<S, FluxSink<T>, S>): The state S is provided and used to generate a
 series of elements. It’s useful for cases like iterating over stateful data.
 
-15. Flux Handle
+16. Flux Handle
 •Combines the logic of filter and map, allowing both synchronous emissions and conditional logic for each value.
 
-16. Do Hooks / Callbacks
+17. Do Hooks / Callbacks
 doOnComplete(): Callback when the sequence completes.
 doOnRequest(): Callback when a request for n elements is made.
 doOnNext(): Callback when an item is emitted.
@@ -94,13 +94,13 @@ doOnError(): Callback when an error occurs.
 doOnTerminate(): Invoked when the sequence terminates, either successfully or with an error. doOnCancel(): Called when a subscription is canceled.
 doOnFinally(): Executes after the sequence is completed, canceled, or errored.
 
-17. Delay Operator
+18. Delay Operator
 • delayElements(Duration): Delays each item emitted by the Flux by the specified duration.
 
-18. Subscribe()
+19. Subscribe()
 • The subscribe method triggers data flow. It has several overloaded versions allowing you to define custom behavior for onNext, onError, onComplete signals.
 
-19. Error Handling
+20. Error Handling
 • onErrorReturn(T fallback): If an error occurs, returns a fallback value.
 • onErrorResume(Function<Throwable, ? extends Publisher<? extends T>>): Fallback to another
 Publisher when an error occurs.
@@ -109,34 +109,34 @@ values.
 • defaultIfEmpty(T defaultValue): Emits a default value if the sequence is empty.
 • switchIfEmpty(Publisher<T>): Switches to another Publisher if the original sequence is empty.
 
-20. Timeout
+21. Timeout
 • timeout(Duration): Throws an error if the sequence doesn’t emit a value within the given duration.
 
-21. Transform Operator
+22. Transform Operator
 • transform(Function<Flux<T>, Publisher<R>> transformer): Transforms the current stream into another
 reactive stream with a different type.
 
-22. Cold Publisher
+23. Cold Publisher
 • A Cold Publisher starts emitting values only when a subscriber subscribes, and each subscriber receives its
 own copy of the data stream.
 • Independent streams. Different producer- Different subscriber
 • Example: Netflix- multiple people watching the same show.
 
-23. Hot Publisher
+24. Hot Publisher
 • A Hot Publisher starts emitting values immediately, regardless of whether there are subscribers. New
 subscribers only receive events emitted after they subscribe.
 • Single Producer- Multiple Subscribers. Can emit even without a subscriber.
 • Example: Movie Theater, Weather App, WhatsApp Channel.
 
-24. Auto Connect
+25. Auto Connect
 • autoConnect(n): Converts a Cold Publisher to Hot Publisher, starting when at least n subscribers are
 connected. Publish.autoconnect()
 
-25. Replay/Cache
+26. Replay/Cache
 • replay(): Replays previous emissions to new subscribers.
 • cache(): Caches and replays emitted values to new subscribers.
 
-26. Schedulers
+27. Schedulers
 • Bounded Elastic: Optimized for blocking I/O tasks, expanding as needed.
 • Parallel: Fixed-size thread pool designed for parallel processing tasks.
 • Single: Executes tasks sequentially on a single thread.
